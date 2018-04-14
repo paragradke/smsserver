@@ -21,6 +21,7 @@ public class SMSController {
     @Autowired
     private AccountService accountService;
 
+    @Deprecated
     @RequestMapping(value="/accounts/{id}",method = RequestMethod.GET)
     public Account getAccount(@PathVariable int id) {
         logger.info("Request received for account id :"+ id);
@@ -28,5 +29,7 @@ public class SMSController {
         logger.info("Response : "+ account);
         return account;
     }
+
+
 
 }

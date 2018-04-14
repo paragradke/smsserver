@@ -16,4 +16,9 @@ public class AccountServiceImpl implements AccountService {
     public Account getAccount(int accountId) {
         return accountDAO.getAccount(accountId);
     }
+
+    @Override
+    public Account getAccount(String username, String authId) {
+        return accountDAO.getAccount(username, authId);
+    }
 }

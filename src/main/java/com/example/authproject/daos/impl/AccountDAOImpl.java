@@ -16,4 +16,9 @@ public class AccountDAOImpl implements AccountDAO {
     public Account getAccount(int accountId) {
         return accountMapper.get(accountId);
     }
+
+    @Override
+    public Account getAccount(String username, String authId) {
+        return accountMapper.getAccount(username, authId);
+    }
 }
