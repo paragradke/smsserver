@@ -1,17 +1,12 @@
-package com.example.authproject.models;
-
+package com.example.authproject.mappers.models;
 
 public class Account {
 
-    private long id;
-    private String authId;
-    private String username;
-
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -31,4 +26,7 @@ public class Account {
         this.username = username;
     }
 
+    private int id;
+    private String authId;
+    private String username;
 }
