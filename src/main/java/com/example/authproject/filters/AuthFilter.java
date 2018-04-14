@@ -1,5 +1,7 @@
 package com.example.authproject.filters;
 
+import com.example.authproject.context.Context;
+import com.example.authproject.context.LocalContext;
 import com.example.authproject.controllers.SMSController;
 import com.example.authproject.mappers.models.Account;
 import com.example.authproject.services.AccountService;
@@ -38,6 +40,8 @@ public class AuthFilter extends OncePerRequestFilter {
 
         Account account = accountService.getAccount(username, authId);
         if (account != null) {
+            Context context = new Context(account);
+            LocalContext.set(context);
             filterChain.doFilter(httpServletRequest, httpServletResponse);
         } else {
             httpServletResponse.setStatus(403);

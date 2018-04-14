@@ -1,6 +1,8 @@
 package com.example.authproject.controllers;
 
 
+import com.example.authproject.context.Context;
+import com.example.authproject.context.LocalContext;
 import com.example.authproject.mappers.models.Account;
 import com.example.authproject.services.AccountService;
 import org.apache.logging.log4j.LogManager;
@@ -31,5 +33,12 @@ public class SMSController {
     }
 
 
-
+    @RequestMapping(value="/inbound/sms",method = RequestMethod.GET)
+    public Account inboundSMS(@PathVariable int id) {
+        logger.info("Request received for account id :"+ id);
+        Context context = LocalContext.get();
+        Account account = context.getAccount();
+        logger.info("Response : "+ account);
+        return account;
+    }
 }
