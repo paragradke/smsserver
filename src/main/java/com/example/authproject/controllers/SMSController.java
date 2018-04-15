@@ -11,6 +11,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 
 @RestController
 @RequestMapping
@@ -32,7 +34,7 @@ public class SMSController {
 
 
     @RequestMapping(value="/inbound/sms",method = RequestMethod.POST)
-    public Account inboundSMS(@RequestBody SMSRequest smsRequest) {
+    public Account inboundSMS(@Valid @RequestBody SMSRequest smsRequest) {
         Context context = LocalContext.get();
         Account account = context.getAccount();
         logger.info("inboundSMS request received for account name:"+ account.getUsername()
@@ -42,7 +44,7 @@ public class SMSController {
     }
 
     @RequestMapping(value="/outbound/sms",method = RequestMethod.POST)
-    public Account outboundSMS(@RequestBody SMSRequest smsRequest) {
+    public Account outboundSMS(@Valid @RequestBody SMSRequest smsRequest) {
         Context context = LocalContext.get();
         Account account = context.getAccount();
         logger.info("outboundSMS request received for account name:"+ account.getUsername()
