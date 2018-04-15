@@ -1,7 +1,7 @@
 package com.example.authproject.services.impl;
 
-import com.example.authproject.cache.CacheEntry;
-import com.example.authproject.cache.SLAEntry;
+
+import com.example.authproject.controllers.SMSController;
 import com.example.authproject.exceptions.NumberNotFoundException;
 import com.example.authproject.exceptions.SLAException;
 import com.example.authproject.exceptions.StopException;
@@ -11,6 +11,8 @@ import com.example.authproject.requests.SMSRequest;
 import com.example.authproject.services.PhoneNumberService;
 import com.example.authproject.services.RedisService;
 import com.example.authproject.services.SMSService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tomcat.util.security.MD5Encoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,11 +28,13 @@ public class SMSServiceImpl implements SMSService {
     @Autowired
     private PhoneNumberService phoneNumberService;
 
+    private static final Logger logger = LogManager.getLogger(SMSServiceImpl.class);
+
     @Override
     public void processInboundSMS(final Account account, final SMSRequest smsRequest)
             throws NumberNotFoundException {
         boolean isToValid = validateNumber(account, smsRequest.getTo());
-        if (isToValid) {
+        if (!isToValid) {
             throw new NumberNotFoundException("to parameter not found");
         }
         tryCacheInjection(account, smsRequest);
@@ -40,7 +44,7 @@ public class SMSServiceImpl implements SMSService {
     public void processOutboundSMS(final Account account, final SMSRequest smsRequest)
             throws NumberNotFoundException, StopException, SLAException {
         boolean isToValid = validateNumber(account, smsRequest.getFrom());
-        if (isToValid) {
+        if (!isToValid) {
             throw new NumberNotFoundException("from parameter not found");
         }
         tryCacheValidation(account, smsRequest);
@@ -55,8 +59,9 @@ public class SMSServiceImpl implements SMSService {
                 || StringUtils.equals(text, "STOP\r\n")) {
             final String from = smsRequest.getFrom();
             final String to = smsRequest.getTo();
-            final String key = MD5Encoder.encode((from+to).getBytes());
-            redisService.setCacheEntry(key, new CacheEntry(from, to));
+            final String key = from+to;
+            logger.info("Saving entry to cache from :"+ from+ " to :"+to+" key :"+ key);
+            redisService.setCacheEntry(key, "STOP");
         }
     }
 
@@ -68,8 +73,8 @@ public class SMSServiceImpl implements SMSService {
     private void tryCacheValidation(final Account account, final SMSRequest smsRequest) throws StopException {
         final String from = smsRequest.getFrom();
         final String to = smsRequest.getTo();
-        final String key = MD5Encoder.encode((from+to).getBytes());
-        final CacheEntry cacheEntry = redisService.getCacheEntry(key);
+        final String key = from+to;
+        final String cacheEntry = redisService.getCacheEntry(key);
         if (cacheEntry != null) {
             throw new StopException("sms from "+ smsRequest.getFrom() +
                     " to "+smsRequest.getTo()+" blocked by STOP request");
@@ -78,15 +83,15 @@ public class SMSServiceImpl implements SMSService {
 
     private void validateSLA(final Account account, final SMSRequest smsRequest) throws SLAException {
         final String from = smsRequest.getFrom();
-        final String key = MD5Encoder.encode(from.getBytes());
-        SLAEntry slaEntry = redisService.getSLAEntry(key);
+        final String key = from;
+        Integer slaEntry = redisService.getSLAEntry(key);
         if (slaEntry == null) {
-            slaEntry = new SLAEntry(from);
+            slaEntry = 0;
         }
-        if (slaEntry.getCounter() > 50) {
+        if (slaEntry.intValue() > 50) {
             throw new SLAException("“limit reached for from "+from);
         }
-        slaEntry.incrementCounter();
+        slaEntry++;
         redisService.setSLAEntry(key, slaEntry);
     }
 }
