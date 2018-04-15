@@ -22,14 +22,15 @@ public interface AccountMapper {
     public Account get(@Param("accountId") final int accountId);
 
 
-    @Select("SELECT A.auth_id, A.username "
+    @Select("SELECT A.auth_id, A.username, A.id "
             + " FROM account A "
             + " where A.username = #{username} "
             + "AND "
             + "A.auth_id = #{authId}")
     @Results({
             @Result(property = "authId", column = "auth_id"),
-            @Result(property = "username", column = "username")
+            @Result(property = "username", column = "username"),
+            @Result(property = "id", column = "id")
     })
     public Account getAccount(@Param("username") final String username, @Param("authId") final String authId);
 
