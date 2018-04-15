@@ -1,0 +1,24 @@
+---
+
+test_name: Inbound SMS Success
+
+stages:
+  - name: Inbound SMS Success
+    request:
+      url: http://localhost:8080/inbound/sms
+      json:
+        to: 4924195509198
+        from: 4924195509196
+        text: Hello World
+      method: POST
+      headers:
+        content-type: application/json
+        username: plivo1
+        authId: 20S0KPNOIM
+    response:
+      status_code: 200
+      body:
+        message: inbound sms ok
+        errors: []
+
+---

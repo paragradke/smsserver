@@ -17,9 +17,28 @@ Go to the project root directory and execute following commands
 
 **To create DB schema**
 
+``pgcli -h localhost -p 5432 -d docker -U postgres -W postgres`` 
+
+```password promt:<postgre>```
+
+Once connected
+``postgres@localhost:postgres> CREATE DATABASE smsdb;``
+
 ``$ psql -h localhost -p 5432 -U postgres --password postgres -d smsdb -a -f sql/dbschema.sql ``
 
 
 With this everything should be up and running.
+
+
+**To Run Integration Tests**
+
+Go to ./itests directory
+
+To install dependencies
+``$ pip install -r requirements.txt`` 
+
+To Run Tests
+
+``$py.test``
 
 
