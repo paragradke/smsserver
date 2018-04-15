@@ -15,7 +15,7 @@ import javax.validation.Constraint;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Phone {
 
-    String message() default "{Phone} is invalid";
+    String message() default "is not a valid phone number format.";
 
     Class<?>[] groups() default {};
 

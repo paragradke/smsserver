@@ -32,18 +32,18 @@ public class SMSRequest {
         this.text = text;
     }
 
-    @Size(min=6, max=16, message = "to is invalid")
+    @Size(min=6, max=16, message = "to number is invalid, length should be in the range [6-16]")
     @Phone
-    @NotBlank(message = "to is invalid")
-    @NotNull(message = "to is invalid")
+    @NotBlank(message = "to number is blank")
+    @NotNull(message = "to number is mandatory param it's not present")
     private String to;
-    @Size(min=6, max=16, message = "from is invalid")
+    @Size(min=6, max=16, message = "from number is invalid, length should be in the range [6-16]")
     @Phone
-    @NotBlank(message = "from is invalid")
-    @NotNull(message = "from is invalid")
+    @NotBlank(message = "from number is blank")
+    @NotNull(message = "from number is mandatory param it's not present")
     private String from;
-    @Size(min=1, max=120)
-    @NotBlank(message = "text is invalid")
-    @NotNull(message = "text is invalid")
+    @Size(min=1, max=120, message = "text length is invalid, length should be in the range [1-120]")
+    @NotBlank(message = "text is blank")
+    @NotNull(message = "text is mandatory param it's not present")
     private String text;
 }

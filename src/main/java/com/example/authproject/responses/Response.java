@@ -1,10 +1,12 @@
 package com.example.authproject.responses;
 
+import java.util.List;
+
 public class Response {
 
-    public Response(final String message, final String error) {
+    public Response(final String message, final List<String> errors) {
         this.message = message;
-        this.error = error;
+        this.errors = errors;
     }
 
     public String getMessage() {
@@ -15,14 +17,14 @@ public class Response {
         this.message = message;
     }
 
-    public String getError() {
-        return error;
+    public List<String> getErrors() {
+        return errors;
     }
 
-    public void setError(String error) {
-        this.error = error;
+    public void setErrorr(List<String> errors) {
+        this.errors = errors;
     }
 
     private String message;
-    private String error;
+    private List<String> errors;
 }
