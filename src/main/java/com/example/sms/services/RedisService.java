@@ -13,5 +13,5 @@ public interface RedisService {
 
     public Integer getSLAEntry(final String key);
 
-    public void setSLAEntry(final String key, final int slaEntry);
+    public void setSLAEntry(final String key, final Integer slaEntry);
 }

@@ -32,6 +32,17 @@ public class SMSRequest {
         this.text = text;
     }
 
+
+    public SMSRequest() {
+
+    }
+
+    public SMSRequest(final String to, final String from, final String text) {
+        this.to = to;
+        this.from = from;
+        this.text = text;
+    }
+
     @Size(min=6, max=16, message = "to number is invalid, length should be in the range [6-16]")
     @Phone
     @NotBlank(message = "to number is blank")

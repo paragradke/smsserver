@@ -32,15 +32,18 @@ public class RedisServiceImpl implements RedisService {
 
     @Override
     public Integer getSLAEntry(String key) {
-        return (Integer) template.opsForValue().get(key);
+        logger.info("getSLAEntry : Key =" + key);
+        String slaEntry = (String) template.opsForValue().get(key);
+        logger.info("getSLAEntry : slaEntry =" + slaEntry);
+        return Integer.parseInt(slaEntry);
     }
 
     @Override
-    public void setSLAEntry(String key, int slaEntry) {
+    public void setSLAEntry(String key, Integer slaEntry) {
         template.opsForValue().set(key, slaEntry);
 
         // set a expire for a message
         template.expire(key, 1, TimeUnit.DAYS);
-        logger.info("Saved entry to SLA  key :"+ key);
+        logger.info("Saved entry to SLA key :"+ key);
     }
 }

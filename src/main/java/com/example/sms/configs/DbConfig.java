@@ -21,7 +21,7 @@ public class DbConfig {
     public DataSource getDataSource() {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://postgresql:5432/smsdb");
+        dataSource.setUrl("jdbc:postgresql://localhost:5432/smsdb");
         dataSource.setUsername("postgres");
         dataSource.setPassword("postgres");
         return dataSource;

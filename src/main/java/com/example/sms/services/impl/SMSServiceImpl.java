@@ -41,11 +41,14 @@ public class SMSServiceImpl implements SMSService {
     public void processOutboundSMS(final Account account, final SMSRequest smsRequest)
             throws NumberNotFoundException, StopException, SLAException {
         boolean isToValid = validateNumber(account, smsRequest.getFrom());
+        logger.info("isToValid :" + isToValid);
         if (!isToValid) {
             throw new NumberNotFoundException("from parameter not found");
         }
         tryCacheValidation(account, smsRequest);
+        logger.info("tryCacheValidation Done" );
         validateSLA(account, smsRequest);
+        logger.info("validateSLA Done" );
     }
 
     private void tryCacheInjection(final Account account, final SMSRequest smsRequest) {
@@ -81,7 +84,7 @@ public class SMSServiceImpl implements SMSService {
     private void validateSLA(final Account account, final SMSRequest smsRequest) throws SLAException {
         final String from = smsRequest.getFrom();
         final String key = from;
-        Integer slaEntry = redisService.getSLAEntry(key);
+        Integer slaEntry = (Integer) redisService.getSLAEntry(key);
         if (slaEntry == null) {
             slaEntry = 0;
         }

@@ -17,7 +17,8 @@ public interface AccountMapper {
             + " where A.id = #{accountId}")
     @Results({
             @Result(property = "authId", column = "auth_id"),
-            @Result(property = "username", column = "username")
+            @Result(property = "username", column = "username"),
+            @Result(property = "id", column = "id")
     })
     public Account get(@Param("accountId") final int accountId);
 

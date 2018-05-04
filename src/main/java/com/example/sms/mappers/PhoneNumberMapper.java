@@ -7,18 +7,21 @@ import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 public interface PhoneNumberMapper {
 
     @Select("SELECT P.number, P.account_id, P.id "
-            + " FROM phone_number P "
-            + " where P.account_id = #{accountId} "
+            + "FROM phone_number P "
+            + "WHERE P.account_id = #{accountId} "
             + "AND "
-            + "P.number = #{number}")
+            + "trim(number) = #{number,javaType=java.lang.String,jdbcType=VARCHAR,typeHandler=org.apache.ibatis.type.StringTypeHandler}")
     @Results({
-            @Result(property = "authId", column = "auth_id"),
-            @Result(property = "username", column = "username"),
+            @Result(property = "accountId", column = "account_id"),
+            @Result(property = "number", column = "number"),
             @Result(property = "id", column = "id")
     })
     public PhoneNumber getPhoneNumber(@Param("accountId") final int accountId,
                                       @Param("number") final String number);
+
 }
